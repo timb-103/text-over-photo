@@ -124,6 +124,10 @@
       background-color: #ccc;
     }
 
+    [v-cloak] {
+      display: none;
+    }
+
     @media (max-width: 500px) {
       .toolbar {
         position: fixed;
@@ -141,7 +145,7 @@
   </style>
 </head>
 
-<body @vue:mounted="mounted">
+<body @vue:mounted="mounted" v-cloak>
   <div id="app">
     <div class="canvas-wrapper">
 
