@@ -303,44 +303,57 @@
         this.originalHeight = img.height;
         this.originalWidth = img.width;
 
-        const maxWidth = window.innerWidth * 0.8;
-        const maxCanvasSize = maxWidth < 500 ? maxWidth : 500;
+        const maxWidth = window.innerWidth * 0.9; // 90% of viewport width
+        const maxHeight = window.innerHeight * 0.9; // 90% of viewport height
+        const maxCanvasSize = 500; // Maximum size constraint
+
+        // Determine the actual max width and height based on constraints
+        const constrainedWidth = Math.min(maxWidth, maxCanvasSize);
+        const constrainedHeight = Math.min(maxHeight, maxCanvasSize);
+
         const imgAspectRatio = img.width / img.height;
 
         let canvasWidth, canvasHeight;
 
-        if (img.width > img.height) {
-          canvasWidth = maxCanvasSize;
-          canvasHeight = maxCanvasSize / imgAspectRatio;
+        // Calculate canvas dimensions while maintaining the image's aspect ratio
+        if (imgAspectRatio > 1) {
+          // Landscape
+          canvasWidth = constrainedWidth;
+          canvasHeight = Math.min(constrainedHeight, canvasWidth / imgAspectRatio);
         } else {
-          canvasHeight = maxCanvasSize;
-          canvasWidth = maxCanvasSize * imgAspectRatio;
+          // Portrait or square
+          canvasHeight = constrainedHeight;
+          canvasWidth = Math.min(constrainedWidth, canvasHeight * imgAspectRatio);
         }
 
+        // Set canvas dimensions
         this.canvas.setWidth(canvasWidth);
         this.canvas.setHeight(canvasHeight);
 
-        // we must account for zoom otherwise may not fill canvas
+        // Account for zoom to ensure the image fills the canvas
         const zoom = this.canvas.getZoom();
 
         img.scaleToWidth(canvasWidth / zoom);
         img.scaleToHeight(canvasHeight / zoom);
 
+        // Set the image as the background
         this.canvas.backgroundImage = img;
         this.canvas.renderAll();
         this.imageLoaded = true;
 
+        // Add textbox if none exists
         const isTextboxAdded = this.countTextboxes() > 0;
-        if (this.countTextboxes() === 0) {
+        if (!isTextboxAdded) {
           this.addText();
         }
       });
     }
 
 
+
     function resizeCanvas() {
-      const viewportWidth = window.innerWidth * 0.8;
-      const viewportHeight = window.innerHeight * 0.7;
+      const viewportWidth = window.innerWidth * 0.9;
+      const viewportHeight = window.innerHeight * 0.9;
 
       const maxCanvasWidth = 500;
       const maxCanvasHeight = 500;
