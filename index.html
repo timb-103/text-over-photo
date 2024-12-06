@@ -155,9 +155,9 @@
 
         <!-- placeholder -->
         <div class="placeholder" v-if="!imageLoaded && !textAdded">
-          <input type="file" @change="handleImageUpload" class="file-upload-input" />
-          <img src="img/icons/image.svg" />
-          <p>Click here or drop an photo to set as background</p>
+          <input type="file" @change="handleImageUpload" class="file-upload-input" aria-labelledby="drop-text" />
+          <img src="img/icons/image.svg" alt="photo input" />
+          <p id="drop-text">Click here or drop an photo to set as background</p>
         </div>
       </div>
 
